@@ -5,8 +5,8 @@ using ariel::Direction;
 
  /*
  Auxiliary function:
- get int -ad length
- get int -ad length
+ get int - ad length
+ get int - ad length
  return - random string
  */
 const int MAX_SIZE = 88;
@@ -22,34 +22,77 @@ string random_string(unsigned int n){
     }
     return ran;
 }
-
+/*
+ Auxiliary function:
+ return - random Direction: Horizontal OR Vertical
+ */
 Direction random_type(){
     vector<Direction> type = {Direction::Horizontal,Direction::Vertical};
     return type.at(rand()%2);
 }
+
 //Tests:
 
-TEST_CASE("post >>Horizontal"){
-    Board board1;
-    for(int i=0; i<500; i++){
+TEST_CASE("post - Bad"){
+ Board board;
+    
+    /*
+    check post empty string on empty board
+    */
+    for(int i=1; i<11; i++){
+        Direction ad_type = random_type();
         unsigned int column = rand()%1000;
         unsigned int row = rand()%1000;
-         unsigned int ad_length = rand() %1000;
-         string ad = random_string(ad_length);
-         Direction ad_type = random_type();
-        board1.post(column , row ,ad_type,ad);
-        CHECK(board1.read(column ,row ,ad_type, ad_length) == ad);
+        CHECK_THROWS(board.post(column ,row ,ad_type, ""));
     }
 }
 
-// TEST_CASE("post >>Vertical"){
-//     Board board2;
-//     for(int i=0; i<500; i++){
-//         unsigned int column1 = rand()%1000;
-//         unsigned int row1 = rand()%1000;
-//          unsigned int ad_length1 = rand() %1000;
-//          string ad1 = random_string(ad_length1);
-//         board2.post(column1 , row1 ,Direction::Vertical,ad1);
-//         CHECK(board2.read(column1 ,row1 ,Direction::Vertical, ad_length1) == ad1);
-//     }
-// }
+TEST_CASE("read - Bad"){
+    Board board;
+    
+    /*
+    try to read random ad on empty board
+    */
+    for(int i=1; i<11; i++){
+        Direction ad_type = random_type();
+        unsigned int column = rand()%1000;
+        unsigned int row = rand()%1000;
+        unsigned int ad_length = rand()%1000;
+        CHECK_THROWS(board.read(column ,row ,ad_type, ad_length));
+    }
+}
+
+TEST_CASE("worng_Direction - post/read"){
+    Board board1;
+    for(int i=0; i<10; i++){
+        unsigned int column = rand()%1000;
+        unsigned int row = rand()%1000;
+         unsigned int ad_length = rand() %1000; 
+         string ad1 = random_string(ad_length);
+        board1.post(column , row ,Direction::Horizontal,ad1); //post Horizontal
+        CHECK_THROWS(board1.read(column ,row ,Direction::Vertical, ad_length)); //try read Vertical
+    }
+
+    Board board2;
+    for(int i=0; i<10; i++){
+        unsigned int column = rand()%1000;
+        unsigned int row = rand()%1000;
+         unsigned int ad_length = rand() %1000; 
+         string ad2 = random_string(ad_length);
+        board2.post(column , row ,Direction::Vertical,ad2); //post Vertical
+        CHECK_THROWS(board2.read(column ,row ,Direction::Horizontal, ad_length)); //try read Horizontal
+    }
+}
+
+TEST_CASE("post_read - Good"){
+    Board board;
+    for(int i=0; i<500; i++){ //checks 500 times for random ad in random places
+        unsigned int column = rand()%1000; //choose random column
+        unsigned int row = rand()%1000; //choose random row
+         unsigned int ad_length = rand() %1000; //choose random ad length
+         string ad = random_string(ad_length); //choose random ad
+         Direction ad_type = random_type(); //choose random Direction
+        board.post(column , row ,ad_type,ad); // post the ad on board
+        CHECK(board.read(column ,row ,ad_type, ad_length) == ad); //checks if post == what we read
+    }
+}
