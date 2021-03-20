@@ -3,15 +3,16 @@
 using ariel::Board;
 using ariel::Direction;
 
+//Unit tests for Board class:
+
  /*
  Auxiliary function:
  get int - ad length
  get int - ad length
  return - random string
  */
-const int MAX_SIZE = 88;
-
 string random_string(unsigned int n){
+    const int MAX_SIZE = 88;
     char letters[MAX_SIZE] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j'
     ,'k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F'
     ,'G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ',
@@ -34,11 +35,9 @@ Direction random_type(){
 //Tests:
 
 TEST_CASE("post - Bad"){
- Board board;
-    
-    /*
-    check post empty string on empty board
-    */
+    Board board;
+
+    //check post empty string on empty board
     for(int i=1; i<11; i++){
         Direction ad_type = random_type();
         unsigned int column = rand()%1000;
@@ -49,10 +48,8 @@ TEST_CASE("post - Bad"){
 
 TEST_CASE("read - Bad"){
     Board board;
-    
-    /*
-    try to read random ad on empty board
-    */
+
+    //try to read random ad on empty board
     for(int i=1; i<11; i++){
         Direction ad_type = random_type();
         unsigned int column = rand()%1000;
