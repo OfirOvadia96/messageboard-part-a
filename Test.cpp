@@ -34,28 +34,14 @@ Direction random_type(){
 
 //Tests:
 
-TEST_CASE("post - Bad"){
+TEST_CASE("empty board"){
     Board board;
-
-    //check post empty string on empty board
-    for(int i=1; i<11; i++){
+    for(int i=0; i<50; i++){
         Direction ad_type = random_type();
         unsigned int column = rand()%1000;
         unsigned int row = rand()%1000;
-        CHECK_THROWS(board.post(column ,row ,ad_type, ""));
-    }
-}
-
-TEST_CASE("read - Bad"){
-    Board board;
-
-    //try to read random ad on empty board
-    for(int i=1; i<11; i++){
-        Direction ad_type = random_type();
-        unsigned int column = rand()%1000;
-        unsigned int row = rand()%1000;
-        unsigned int ad_length = rand()%1000;
-        CHECK_THROWS(board.read(column ,row ,ad_type, ad_length));
+        board.post(column ,row ,ad_type, "");
+        CHECK(board.read(column ,row ,ad_type, 0) == "");
     }
 }
 
